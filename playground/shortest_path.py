@@ -5,7 +5,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # load water network model from an INP file
-wn = wntr.network.WaterNetworkModel('networks/wntr_examples/Net3.inp')
+wn = wntr.network.WaterNetworkModel('../networks/wntr_examples/Net3.inp')
 
 # create graph from the water network model
 G = wn.get_graph()

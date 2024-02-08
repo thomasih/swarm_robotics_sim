@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/tih/Library/CloudStorage/OneDrive-UniversityofLeeds/_PROJECT/wntr_sim/sim_env"
+VIRTUAL_ENV="/Users/tih/Library/CloudStorage/OneDrive-UniversityofLeeds/_PROJECT/swarm_robotics_sim/sim_env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

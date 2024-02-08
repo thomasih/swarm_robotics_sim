@@ -4,7 +4,7 @@ import pygame
 import wntr
 import random
 
-wn = wntr.network.WaterNetworkModel('networks/wntr_examples/Net3.inp')
+wn = wntr.network.WaterNetworkModel('../networks/wntr_examples/Net3.inp')
 G = wn.to_graph()
 
 # bounds of graph
