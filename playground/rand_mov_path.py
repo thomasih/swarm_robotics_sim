@@ -1,3 +1,5 @@
+# –––––––––– Robot moves along directed graph in random path –––––––––
+
 import pygame
 import wntr
 import random
@@ -12,7 +14,7 @@ max_x = max([G.nodes[node]['pos'][0] for node in G.nodes])
 max_y = max([G.nodes[node]['pos'][1] for node in G.nodes])
 
 # window dimensions and margin
-window_width, window_height = 800, 600
+window_width, window_height = 1200, 800
 margin = 50
 
 # scale and offset calculation with margin
@@ -30,10 +32,10 @@ for node in G.nodes:
 # init pygame and define colours
 pygame.init()
 screen = pygame.display.set_mode((window_width, window_height))
-BACKGROUND_COLOR = (211, 211, 211)  # Soft Grey
-NETWORK_LINE_COLOR = (0, 0, 128)  # Navy Blue
-NODE_COLOR = (0, 128, 128)  # Teal
-ROBOT_COLOR = (255, 127, 80)  # Coral
+BACKGROUND_COLOR = (211, 211, 211) 
+NETWORK_LINE_COLOR = (0, 0, 128)
+NODE_COLOR = (0, 128, 128)
+ROBOT_COLOR = (255, 127, 80)
 
 # robot starts at first node
 robot_position = list(G.nodes())[0]

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 wn = wntr.network.WaterNetworkModel('../networks/wntr_examples/Net3.inp')
 
 # create graph from the water network model
-G = wn.get_graph()
+G = wn.to_graph()
 
 # draw graph using network x
 plt.figure(figsize=(12, 8))
