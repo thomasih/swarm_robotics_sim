@@ -6,7 +6,7 @@ class Network:
     def __init__(self, network_file):
         ''' Network object constructor '''
         self.wn = wntr.network.WaterNetworkModel(network_file)
-        self.G = self.wn.get_graph()
+        self.G = self.wn.get_graph().to_undirected()
         self.assign_edge_lengths()
 
     def assign_edge_lengths(self):
@@ -18,7 +18,7 @@ class Network:
             if self.G.has_edge(start_node, end_node):
                 for key in self.G[start_node][end_node]:
                     self.G[start_node][end_node][key]['length'] = length
-
+        
     def scale_network(self, window_width, window_height, margin):
         ''' Scales the network to fit the window '''
         min_x = min([self.G.nodes[node]['pos'][0] for node in self.G.nodes])
@@ -39,7 +39,10 @@ class Network:
         neighbors = list(self.G.neighbors(node))
         distances = {}
         for neighbor in neighbors:
-            # Use length of first edge between node and neighbour...
-            key = next(iter(self.G[node][neighbor]))
-            distances[neighbor] = self.G[node][neighbor][key]['length']
+            key = next(iter(self.G[node][neighbor]), None)
+            if key is not None and 'length' in self.G[node][neighbor][key]:
+                distances[neighbor] = self.G[node][neighbor][key]['length']
+            else:
+                # If no length found, set default value to zero then this is later ignnored
+                distances[neighbor] = 0
         return neighbors, distances
