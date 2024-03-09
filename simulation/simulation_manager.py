@@ -16,7 +16,7 @@ class SimulationManager:
         self.setup_pygame()
         self.network.scale_network(self.window_width, self.window_height, 50)
         self.all_robots_stopped = False
-        self.visited_nodes = set()
+        self.visited_nodes = set([start_position])
 
     def setup_pygame(self):
         ''' Sets up the pygame window and colors. '''
@@ -32,8 +32,8 @@ class SimulationManager:
 
     def run(self):
         ''' Runs the simulation, updating the display and robot positions. '''
-        count = 0
-        while count < 40:
+        self.all_robots_stopped = False
+        while len(self.visited_nodes) < len(self.network.G.nodes()):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
@@ -42,7 +42,6 @@ class SimulationManager:
             all_inactive = self.move_robots()
             pygame.display.flip()
             pygame.time.delay(200)
-            count += 1
             if all_inactive:
                 break
 
