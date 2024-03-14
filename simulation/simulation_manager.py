@@ -1,8 +1,6 @@
 import pygame
-import random
 from network import Network
-from robot import Robot
-from inspection_strategy import RandomWalkStrategy, MultiRobotManager
+from inspection_strategy import MultiRobotManager, RandomWalkStrategy, PheromoneStrategy
 
 class SimulationManager:
     ''' Manages the simulation; initializes the network, robots, and inspection strategy. '''
@@ -31,19 +29,29 @@ class SimulationManager:
         }
 
     def run(self):
-        ''' Runs the simulation, updating the display and robot positions. '''
-        self.all_robots_stopped = False
-        while len(self.visited_nodes) < len(self.network.G.nodes()):
+        ''' Runs simulation until network has been fully covered. '''
+        while len(self.visited_nodes) != len(self.network.G.nodes):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    pygame.quit()
                     return
+
             self.screen.fill(self.colors['background'])
             self.draw_network()
-            all_inactive = self.move_robots()
+
+            for robot in self.multi_robot_manager.robots:
+                next_position, distance = self.strategy.next_move(robot, self.multi_robot_manager.robots, self.network)
+                robot.move(next_position, distance)
+                self.visited_nodes.add(next_position)
+                
+                if hasattr(self.strategy, 'reinforce_pheromone'):
+                    self.strategy.reinforce_pheromone((robot.last_position, next_position))
+
+                robot_pos = self.network.G.nodes[robot.position]['pos']
+                pygame.draw.circle(self.screen, self.colors['robot'], robot_pos, 5)
+
             pygame.display.flip()
-            pygame.time.delay(200)
-            if all_inactive:
-                break
+
 
     def draw_network(self):
         ''' Draws the water distribution network and nodes on the screen. '''
@@ -71,3 +79,7 @@ class SimulationManager:
             robot_pos = self.network.G.nodes[robot.position]['pos']
             pygame.draw.circle(self.screen, self.colors['robot'], robot_pos, 5)
         return all_inactive
+
+    def get_number_of_nodes(self):
+        ''' Returns number of nodes in the network. '''
+        return len(self.network.G.nodes)

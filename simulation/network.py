@@ -1,8 +1,7 @@
 import wntr
-import math
 
 class Network:
-    ''' Manages the water distribution network model '''
+    ''' Manages the water distribution network model. '''
     def __init__(self, network_file):
         ''' Network object constructor '''
         self.wn = wntr.network.WaterNetworkModel(network_file)
@@ -10,7 +9,7 @@ class Network:
         self.assign_edge_lengths()
 
     def assign_edge_lengths(self):
-        ''' Assigns lengths to edges based on pipe lengths in the inp file '''
+        ''' Assigns lengths to edges based on pipe lengths in the inp file. '''
         for pipe_name, pipe in self.wn.pipes():
             start_node, end_node = pipe.start_node_name, pipe.end_node_name
             length = pipe.length
@@ -20,7 +19,7 @@ class Network:
                     self.G[start_node][end_node][key]['length'] = length
         
     def scale_network(self, window_width, window_height, margin):
-        ''' Scales the network to fit the window '''
+        ''' Scales the network to fit the window. '''
         min_x = min([self.G.nodes[node]['pos'][0] for node in self.G.nodes])
         min_y = min([self.G.nodes[node]['pos'][1] for node in self.G.nodes])
         max_x = max([self.G.nodes[node]['pos'][0] for node in self.G.nodes])
@@ -35,7 +34,7 @@ class Network:
             self.G.nodes[node]['pos'] = scaled_pos
 
     def get_neighbors_and_distance(self, node):
-        ''' Returns neighbors and distances from a node '''
+        ''' Returns neighbors and distances from a node. '''
         neighbors = list(self.G.neighbors(node))
         distances = {}
         for neighbor in neighbors:

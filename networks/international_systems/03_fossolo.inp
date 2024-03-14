@@ -123,8 +123,6 @@ foss_poly_1 -- Bragalli, D'Ambrosio, Lee, Lodi, Toth (2008)
 ;ID              	Status/Setting
 
 [PATTERNS]
-;ID              	Multipliers
-;
   
 
 [CURVES]
@@ -181,7 +179,6 @@ foss_poly_1 -- Bragalli, D'Ambrosio, Lee, Lodi, Toth (2008)
  Trials             	500
  Accuracy           	0.001
  Unbalanced         	Continue 10
- Pattern            	time
  Demand Multiplier  	1.0
  Emitter Exponent   	0.5
  Quality            	Cloro mg/L
