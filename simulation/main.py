@@ -44,7 +44,7 @@ def main():
             'Percentage Decrease': percentage_decrease,
         }
 
-    print(f"{'Network File':<20} | {'Nodes':<6} | {'RandomWalk':<12} | {'Pheromone':<12} | {'% Decrease':<12}")
+    print(f"{'Network File':<20} | {'Nodes':<6} | {'Random':<12} | {'Pheromone':<12} | {'% Decrease':<12}")
     print('-' * 74)
     for network_file, info in results.items():
         print(f"{network_file:<20} | {info['Node Count']:<6} | {info['RandomWalkStrategy']:<12.2f} | {info['PheromoneStrategy']:<12.2f} | {info['Percentage Decrease']:<12.2f}")

@@ -16,13 +16,3 @@ class Robot:
         self.distance_covered += distance
         self.visited_nodes.add(next_position)
         self.visited_edges.add((self.last_position, next_position))
-
-    def get_status(self):
-        ''' Returns the current status of the robot. '''
-        return {
-            'robot_id': self.robot_id,
-            'position': self.position,
-            'distance_covered': self.distance_covered,
-            'time_elapsed': self.time_elapsed,
-            'path_taken': self.path_taken,
-        }
