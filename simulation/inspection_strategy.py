@@ -34,7 +34,7 @@ class RandomWalkStrategy(InspectionStrategy):
         distance = distances[new_position]
         return new_position, distance
 
-class PheromoneStrategy(InspectionStrategy):
+class AntColonyOptimisation(InspectionStrategy):
     ''' Strategy based on ant colony optimisation (ACO) algorithm. '''
     def __init__(self, network):
         ''' Calls constructor of base class and intialises class variables. '''

@@ -1,6 +1,6 @@
 import pygame
 from network import Network
-from inspection_strategy import MultiRobotManager, RandomWalkStrategy, PheromoneStrategy
+from inspection_strategy import MultiRobotManager, RandomWalkStrategy, AntColonyOptimisation
 
 class SimulationManager:
     ''' Manages the simulation; initializes the network, robots, and inspection strategy. '''

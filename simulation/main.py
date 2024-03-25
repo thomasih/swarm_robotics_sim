@@ -1,5 +1,6 @@
+import os
 from simulation_manager import SimulationManager
-from inspection_strategy import RandomWalkStrategy, PheromoneStrategy
+from inspection_strategy import RandomWalkStrategy, AntColonyOptimisation
 
 def run_simulation(network_file, number_of_robots, strategy_class):
     ''' Runs simulation specified amount of times and returns average total distance. '''
@@ -14,40 +15,44 @@ def run_simulation(network_file, number_of_robots, strategy_class):
 
 def main():
     ''' Defines metrics and runs simulation, plotting results in a table. '''
-    network_files = [
-        "01_apulia.inp",
-        "02_balerma.inp",
-        "03_fossolo.inp",
-        "04_pescara.inp",
-        "05_modena.inp",
-        "06_zhi_jiang.inp",
-        "07_marchi_rural.inp"
-    ]
+    directory_path = "../networks/test_space/"
+    network_files = [file for file in os.listdir(directory_path) if file.endswith(".inp")]
     number_of_robots = 10
-    strategies = [RandomWalkStrategy, PheromoneStrategy]
+    strategies = [RandomWalkStrategy, AntColonyOptimisation]
     results = {}
 
     for network_file in network_files:
-        node_count = SimulationManager(f'../networks/international_systems/{network_file}', number_of_robots, RandomWalkStrategy).get_number_of_nodes()
+        full_path = os.path.join(directory_path, network_file)
+        node_count = SimulationManager(full_path, number_of_robots, RandomWalkStrategy).get_number_of_nodes()
         distances = {}
         for strategy in strategies:
             strategy_name = strategy.__name__
-            average_distance = run_simulation(f'../networks/international_systems/{network_file}', number_of_robots, strategy)
+            average_distance = run_simulation(full_path, number_of_robots, strategy)
             distances[strategy_name] = average_distance
         random_walk_distance = distances['RandomWalkStrategy']
-        pheromone_distance = distances['PheromoneStrategy']
+        pheromone_distance = distances['AntColonyOptimisation']
         percentage_decrease = ((random_walk_distance - pheromone_distance) / random_walk_distance) * 100
         results[network_file] = {
             'Node Count': node_count,
             'RandomWalkStrategy': random_walk_distance,
-            'PheromoneStrategy': pheromone_distance,
+            'AntColonyOptimisation': pheromone_distance,
             'Percentage Decrease': percentage_decrease,
         }
 
-    print(f"{'Network File':<20} | {'Nodes':<6} | {'Random':<12} | {'Pheromone':<12} | {'% Decrease':<12}")
-    print('-' * 74)
-    for network_file, info in results.items():
-        print(f"{network_file:<20} | {info['Node Count']:<6} | {info['RandomWalkStrategy']:<12.2f} | {info['PheromoneStrategy']:<12.2f} | {info['Percentage Decrease']:<12.2f}")
+    sorted_results = sorted(results.items(), key=lambda x: x[1]['Node Count'])
+
+    print('-' * 88) 
+    print(f"{'Network File':<20} | {'No. of Nodes':<12} | {'Random (ft)':<15} | {'ACO (ft)':<15} | {'% Decrease':<15}")
+    print('-' * 88) 
+
+    total_percentage_decrease = 0
+    for network_file, info in sorted_results:
+        print(f"{network_file:<20} | {info['Node Count']:<12} | {int(info['RandomWalkStrategy']):<15} | {int(info['AntColonyOptimisation']):<15} | {info['Percentage Decrease']:<15.2f}")
+        total_percentage_decrease += info['Percentage Decrease']
+    print('-' * 88) 
+
+    average_percentage_decrease = total_percentage_decrease / len(sorted_results)
+    print(f"Average Percentage Decrease: {average_percentage_decrease:.2f}%\n")
 
 if __name__ == "__main__":
     main()
